@@ -1,5 +1,5 @@
 "use client";
-import { increment, addMessage, getMessages } from "@/actions/increment";
+import { increment, addMessage } from "@/actions/increment";
 import React, { useState, useEffect } from "react";
 
 export default function HomePage() {
@@ -34,7 +34,7 @@ export default function HomePage() {
           <p className="hidden">Loading...</p>
         )}
       </div>
-      <div className="flex items-center justify-center">
+      <div className="flex items-center justify-center new-container">
         <div className="bg-transparent border-4 border-zinc-800 p-8 rounded-2xl">
           <p className="text-4xl bg-clip-text text-center tracking-tighter relative w-full leading-relaxed font-bold text-transparent bg-gradient-to-b from-[#fff] to-black capitalize after:content-[''] after:w-full after:h-[3px] after:bg-gradient-to-b after:from-[#fff] after:to-[#000] after:absolute after:bottom-0 after:left-0 after:rounded-full">
             Something new for a database
