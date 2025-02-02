@@ -1,101 +1,74 @@
-import Image from "next/image";
+"use client";
+import { increment, addMessage, getMessages } from "@/actions/increment";
+import React, { useState, useEffect } from "react";
 
-export default function Home() {
+export default function HomePage() {
+  const [visitors, SetVisitors] = useState<number | null>(null);
+  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [message, setMessage] = useState<string>("");
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    await addMessage(name, email, message);
+    setName("");
+    setEmail("");
+    setMessage("");
+  };
+  useEffect(() => {
+    async function fetchVisitorCount() {
+      const count = await increment();
+      SetVisitors(count);
+    }
+    fetchVisitorCount();
+  }, []);
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="pt-10">
+      <div>
+        <h1 className="text-4xl bg-clip-text text-center tracking-tighter relative w-full leading-relaxed font-bold text-transparent bg-gradient-to-b from-[#fff] to-black capitalize">
+          Welcome To My Website
+        </h1>
+        {visitors !== null ? (
+          <p className="hidden">Visitors: {visitors}</p>
+        ) : (
+          <p className="hidden">Loading...</p>
+        )}
+      </div>
+      <div className="flex items-center justify-center">
+        <div className="bg-transparent border-4 border-zinc-800 p-8 rounded-2xl">
+          <p className="text-4xl bg-clip-text text-center tracking-tighter relative w-full leading-relaxed font-bold text-transparent bg-gradient-to-b from-[#fff] to-black capitalize after:content-[''] after:w-full after:h-[3px] after:bg-gradient-to-b after:from-[#fff] after:to-[#000] after:absolute after:bottom-0 after:left-0 after:rounded-full">
+            Something new for a database
+          </p>
+          <form action="." className="mt-4" onSubmit={onSubmit}>
+            <div className="flex flex-col space-y-4">
+              <input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                type="text"
+                placeholder="Enter your name"
+                className="input input-bordered w-full bg-transparent border-zinc-800 focus:outline-none outline-none focus:border-zinc-800 text-lg text-white capitalize"
+              />
+              <input
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                type="text"
+                placeholder="Enter your email"
+                className="input input-bordered w-full bg-transparent border-zinc-800 focus:outline-none outline-none focus:border-zinc-800 text-lg text-white"
+              />
+              <input
+                value={message}
+                type="text"
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder="Enter your message"
+                className="input input-bordered w-full bg-transparent border-zinc-800 focus:outline-none outline-none focus:border-zinc-800 text-lg text-white capitalize"
+              />
+              <button className="btn btn-primary text-inherit font-bold text-base tracking-tighter uppercase w-full">
+                Submit
+              </button>
+            </div>
+          </form>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </div>
     </div>
   );
 }
